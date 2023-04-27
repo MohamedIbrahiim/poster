@@ -30,18 +30,21 @@ def set_db_object(connection_obj: dict) -> None:
 
 class DbConnection:
     @classmethod
-    def db_execute(cls, query, is_commit=False) -> psycopg2:
+    def db_execute(cls, query, params=None, is_commit=False) -> psycopg2:
         """
         function will execute created query and will allow if any modifications
         will happen inside cursor
+        :param params:
         :param query: query needs to be executed
         :param is_commit: if allowing to write on database
         :return: returning cursor which will hold data returned from database
         """
+        if params is None:
+            params = {}
         validate_not_none(__DB_SETTINGS__)
         connection = psycopg2.connect(**__DB_SETTINGS__)
         cursor = connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query, params)
         if is_commit:
             connection.commit()
         return cursor

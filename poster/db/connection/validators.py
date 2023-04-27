@@ -25,5 +25,5 @@ def validate_keys(connection_obj: dict) -> None:
 
 def validate_not_none(connection_obj: dict) -> None:
     for key in LIST_OF_KEYS:
-        if connection_obj.get(key, None):
+        if not connection_obj.get(key, None):
             raise AttributeError(f"{key} can not be none or empty")
